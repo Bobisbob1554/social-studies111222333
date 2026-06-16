@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open-Source Curriculum Support Hub</title>
+    <style>
+        :root {
+            --primary: #34495e;
+            --accent: #2980b9;
+            --bg: #f8f9fa;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .notice-bar {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e1e4e6;
+            border-radius: 6px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+        .card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        #workspace {
+            display: none;
+            background: white;
+            border: 1px solid #e1e4e6;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .btn:hover { background-color: #2c3e50; }
+        canvas {
+            background: #111;
+            display: block;
+            margin: 0 auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        /* Panic Screen Overlay */
+        #panic-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-hub">
+        <div class="navbar">
+            <span>EduCore Analytics v4.2</span>
+            <span style="font-size: 12px; opacity: 0.8;">Status: Operational</span>
+        </div>
+        
+        <div class="container">
+            <div class="notice-bar">
+                <strong>System Note:</strong> Please select an interactive kinetic data model below to begin your spatial processing and feedback loops. Press <strong>ESC</strong> at any time to return immediately to reading logs.
+            </div>
+
+            <div class="grid">
+                <div class="card" onclick="launchGame('snake')">
+                    <h3>Spatial Module Alpha (Snake)</h3>
+                    <p>Analyze grid-based optimization paths. Direct an expanding coordinate line to clean system data fragments without self-intersecting.</p>
+                </div>
+                
+                <div class="card" onclick="launchGame('pong')">
+                    <h3>Kinetic Module Beta (Pong)</h3>
+                    <p>Calculate angles of reflection. Deflect an accelerating velocity vector against an automated calculation paddle. Use Up/Down arrows.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="workspace" class="container">
+        <button class="btn" onclick="exitWorkspace()">← Return to Module Directory</button>
+        <canvas id="gameCanvas" width="600" height="400"></canvas>
+        <p style="color: #999; font-size: 12px; margin-top: 15px;">Controls: Arrow Keys. Tap Escape to instantly hide this interface.</p>
+    </div>
+
+    <div id="panic-screen">
+        <h1 style="color:#2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">Section 4.12: Quantitative Analysis of Historical Documents</h1>
+        <p style="font-size: 16px; line-height: 1.6; color: #333;">
+            In evaluating primary source materials from the late industrial era, researchers must account for regional economic variations and literacy rates. Quantitative analysis involves tracking repeating semantic structures across multiple text bases to eliminate individual scribe bias.
+        </p>
+        <p style="font-size: 16px; line-height: 1.6; color: #333;">
+            Data gathered from municipal shipping logs indicates a 14% deviation in projected trade values between the third and fourth quarters. This anomaly is widely attributed to localized seasonal disruptions rather than systemic macroeconomic policy shifts.
+        </p>
+        <button onclick="hidePanic()" style="margin-top: 40px; background: none; border: 1px solid #ccc; color: #999; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Resume Session</button>
+    </div>
+
+    <script>
+        const mainHub = document.getElementById('main-hub');
+        const workspace = document.getElementById('workspace');
+        const panicScreen = document.getElementById('panic-screen');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let activeLoop = null;
+        let currentGame = "";
+
+        // Panic Button Handler (ESC key)
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (activeLoop) clearInterval(activeLoop);
+                workspace.style.display = 'none';
+                mainHub.style.display = 'none';
+                panicScreen.style.display = 'block';
+            }
+        });
+
+        function hidePanic() {
+            panicScreen.style.display = 'none';
+            mainHub.style.display = 'block';
+        }
+
+        function launchGame(gameType) {
+            mainHub.style.display = 'none';
+            workspace.style.display = 'block';
+            currentGame = gameType;
+            
+            if (activeLoop) clearInterval(activeLoop);
+            
+            if (gameType === 'snake') {
+                initSnake();
+            } else if (gameType === 'pong') {
+                initPong();
+            }
+        }
+
+        function exitWorkspace() {
+            if (activeLoop) clearInterval(activeLoop);
+            workspace.style.display = 'none';
+            mainHub.style.display = 'block';
+        }
+
+        // ==========================================
+        // GAME MODULE 1: SNAKE
+        // ==========================================
+        function initSnake() {
+            let size = 20;
+            let snake = [{x: 200, y: 200}, {x: 180, y: 200}];
+            let dx = size, dy = 0;
+            let foodX, foodY;
+
+            function placeFood() {
+                foodX = Math.floor(Math.random() * (canvas.width / size)) * size;
+                foodY = Math.floor(Math.random() * (canvas.height / size)) * size;
+            }
+            placeFood();
+
+            window.onkeydown = function(e) {
+                if (e.key === 'ArrowLeft' && dx === 0) { dx = -size; dy = 0; }
+                if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -size; }
+                if (e.key === 'ArrowRight' && dx === 0) { dx = size; dy = 0; }
+                if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = size; }
+            };
+
+            activeLoop = setInterval(() => {
+                let head = {x: snake[0].x + dx, y: snake[0].y + dy};
+                
+                // Wall collision
+                if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+                    exitWorkspace(); alert('Module Recalibrating (Game Over)'); return;
+                }
+                
+                snake.unshift(head);
+                if (head.x === foodX && head.y === foodY) {
+                    placeFood();
+                } else {
+                    snake.pop();
+                }
+
+                // Draw
+                ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#2ecc71'; snake.forEach(p => ctx.fillRect(p.x, p.y, size-1, size-1));
+                ctx.fillStyle = '#e74c3c'; ctx.fillRect(foodX, foodY, size-1, size-1);
+            }, 90);
+        }
+
+        // ==========================================
+        // GAME MODULE 2: PONG
+        // ==========================================
+        function initPong() {
+            let padH = 80, padW = 10;
+            let p1Y = 160, p2Y = 160;
+            let ballX = 300, ballY = 200;
+            let ballVX = -4, ballVY = 3;
+            let keys = {};
+
+            window.onkeydown = e => keys[e.key] = true;
+            window.onkeyup = e => keys[e.key] = false;
+
+            activeLoop = setInterval(() => {
+                // Controls
+                if (keys['ArrowUp'] && p1Y > 0) p1Y -= 5;
+                if (keys['ArrowDown'] && p1Y < canvas.height - padH) p1Y += 5;
+                
+                // Simple AI Tracker
+                if (ballY < p2Y + padH/2 && p2Y > 0) p2Y -= 4;
+                if (ballY > p2Y + padH/2 && p2Y < canvas.height - padH) p2Y += 4;
+
+                // Move Ball
+                ballX += ballVX; ballY += ballVY;
+
+                // Wall bounces
+                if (ballY <= 0 || ballY >= canvas.height) ballVY = -ballVY;
+
+                // Paddle collisions
+                if (ballX <= padW + 10) {
+                    if (ballY > p1Y && ballY < p1Y + padH) {
+                        ballVX = -ballVX * 1.05; // speed up slightly
+                    } else {
+                        exitWorkspace(); alert('Module Recalibrating (Game Over)'); return;
+                    }
+                }
+                if (ballX >= canvas.width - padW - 10) {
+                    if (ballY > p2Y && ballY < p2Y + padH) ballVX = -ballVX;
+                    else { ballX = 300; ballY = 200; ballVX = -4; }
+                }
+
+                // Draw
+                ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(10, p1Y, padW, padH); // P1
+                ctx.fillRect(canvas.width - 20, p2Y, padW, padH); // AI
+                ctx.fillRect(ballX, ballY, 8, 8); // Ball
+            }, 1000/60);
+        }
+    </script>
+</body>
+</html>
