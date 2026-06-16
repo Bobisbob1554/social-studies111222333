@@ -3,120 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Suite - Drew Pep</title>
+    <title>GameHub - Drew Pep</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
-            color: #333;
             overflow-x: hidden;
+            position: relative;
         }
         
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%);
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 25px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .header h1 {
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo h1 {
             font-size: 32px;
-            font-weight: 700;
-            color: #667eea;
-            letter-spacing: -0.5px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
         }
         
         .creator-badge {
-            font-size: 16px;
-            color: #764ba2;
-            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
         
-        .creator-badge::before {
-            content: "✨";
-            font-size: 20px;
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 5px 25px rgba(102, 126, 234, 0.8); }
         }
         
+        /* Main Container */
         .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
         
-        .intro-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        /* Hero Section */
+        .hero {
             text-align: center;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease-out;
         }
         
-        .intro-section h2 {
-            color: #667eea;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
             margin-bottom: 15px;
-            font-size: 24px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
-        .intro-section p {
-            color: #666;
-            font-size: 16px;
+        .hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 0 auto 30px;
             line-height: 1.6;
         }
         
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        /* Games Grid */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
         
         .game-card {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
         }
         
         .game-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
             border-color: #667eea;
         }
         
-        .game-card .icon {
-            font-size: 40px;
-            margin-bottom: 15px;
+        .game-card:hover::before {
+            opacity: 1;
         }
+        
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .game-card:nth-child(1) .icon { animation-delay: 0s; }
+        .game-card:nth-child(2) .icon { animation-delay: 0.1s; }
+        .game-card:nth-child(3) .icon { animation-delay: 0.2s; }
+        .game-card:nth-child(4) .icon { animation-delay: 0.3s; }
+        .game-card:nth-child(5) .icon { animation-delay: 0.4s; }
+        .game-card:nth-child(6) .icon { animation-delay: 0.5s; }
+        .game-card:nth-child(7) .icon { animation-delay: 0.6s; }
+        .game-card:nth-child(8) .icon { animation-delay: 0.7s; }
         
         .game-card h3 {
             color: #667eea;
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 22px;
+            margin-bottom: 12px;
+            font-weight: 700;
         }
         
         .game-card p {
             color: #666;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
         
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
+        .play-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .play-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
         
         /* Game View */
@@ -124,12 +263,14 @@
         
         #workspace {
             display: none;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
             margin: 40px auto;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 20px;
             max-width: 1200px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
         
         .game-container {
@@ -142,55 +283,58 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 12px 28px;
-            border-radius: 8px;
+            padding: 14px 32px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
         .back-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
         }
         
         canvas {
             background: #111;
             display: block;
-            margin: 20px auto;
-            border-radius: 10px;
-            border: 2px solid #667eea;
+            margin: 25px auto;
+            border-radius: 15px;
+            border: 3px solid #667eea;
             max-width: 100%;
             height: auto;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
         
         .game-info {
             text-align: center;
             color: #667eea;
-            margin-bottom: 20px;
-            font-size: 16px;
-            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 17px;
+            font-weight: 700;
         }
         
         .score-display {
             text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin: 20px 0;
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 25px 0;
         }
         
         /* Memory Game */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            max-width: 400px;
-            margin: 25px auto;
+            gap: 15px;
+            max-width: 450px;
+            margin: 30px auto;
         }
         
         .memory-card {
@@ -198,22 +342,22 @@
             aspect-ratio: 1;
             background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
             transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
         
         .memory-card:hover {
-            transform: scale(1.08);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            transform: scale(1.1) rotateY(5deg);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
         }
         
         .memory-card.flipped {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
             color: #333;
         }
         
@@ -221,37 +365,46 @@
         .simon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 320px;
-            margin: 25px auto;
+            gap: 25px;
+            max-width: 350px;
+            margin: 30px auto;
         }
         
         .simon-btn {
             width: 100%;
             aspect-ratio: 1;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
             font-size: 18px;
             font-weight: bold;
             opacity: 0.8;
             transition: all 0.15s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
         
         .simon-btn:hover { opacity: 0.95; }
-        .simon-btn.red { background-color: #e74c3c; }
-        .simon-btn.blue { background-color: #3498db; }
-        .simon-btn.green { background-color: #2ecc71; }
-        .simon-btn.yellow { background-color: #f39c12; }
-        .simon-btn.active { opacity: 1; transform: scale(1.1); }
+        .simon-btn.red { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .simon-btn.blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .simon-btn.green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .simon-btn.yellow { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .simon-btn.active { opacity: 1; transform: scale(1.15); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-top: 40px;
+        }
         
         /* Panic Screen */
         #panic-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff, #f5f5f5);
             color: #1e293b;
             padding: 60px;
             box-sizing: border-box;
@@ -260,141 +413,179 @@
         }
         
         @media (max-width: 768px) {
-            .header { padding: 20px; }
-            .header h1 { font-size: 24px; }
-            .creator-badge { font-size: 14px; }
-            .games-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+            .header { padding: 15px 20px; }
+            .logo h1 { font-size: 24px; }
+            .creator-badge { font-size: 12px; padding: 8px 16px; }
+            .hero h2 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .games-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
             .game-card { padding: 20px; }
+            .stats { gap: 20px; }
         }
     </style>
 </head>
 <body>
     
-    <!-- MAIN HUB -->
-    <div id="main-hub">
-        <div class="header">
-            <h1>🎮 Game Suite</h1>
-            <div class="creator-badge">by Drew Pep</div>
-        </div>
-        
-        <div class="container">
-            <div class="intro-section">
-                <h2>Welcome to the Ultimate Game Collection</h2>
-                <p>Play a variety of games to test your skills and have fun. Choose a game below to get started!</p>
+    <div class="content-wrapper">
+        <!-- MAIN HUB -->
+        <div id="main-hub">
+            <div class="header">
+                <div class="logo">
+                    <h1>🎮 GameHub</h1>
+                </div>
+                <div class="creator-badge">✨ by Drew Pep</div>
             </div>
             
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('dash')">
-                    <div class="icon">🏃</div>
-                    <h3>Dash Runner</h3>
-                    <p>Jump over obstacles and test your reflexes. How far can you run? Press SPACE or click to jump.</p>
+            <div class="container">
+                <div class="hero">
+                    <h2>Ultimate Game Collection</h2>
+                    <p>Play 8 incredible games designed to challenge your skills and keep you entertained</p>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Games</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">Fun</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Free</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="game-card" onclick="launchGame('shooter')">
-                    <div class="icon">🎯</div>
-                    <h3>Space Shooter</h3>
-                    <p>Defend your ship from incoming enemies. Use ARROWS to move and SPACE to fire.</p>
+                <div class="games-grid">
+                    <div class="game-card" onclick="launchGame('dash')">
+                        <div class="card-content">
+                            <div class="icon">🏃</div>
+                            <h3>Dash Runner</h3>
+                            <p>Jump over obstacles and test your reflexes. How far can you run?</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('dash')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('shooter')">
+                        <div class="card-content">
+                            <div class="icon">🎯</div>
+                            <h3>Space Shooter</h3>
+                            <p>Defend your ship from incoming enemies. Fire away!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('shooter')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('snake')">
+                        <div class="card-content">
+                            <div class="icon">🐍</div>
+                            <h3>Snake Master</h3>
+                            <p>Grow your snake by eating food. Don't hit yourself!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('snake')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('pong')">
+                        <div class="card-content">
+                            <div class="icon">🎾</div>
+                            <h3>Pong Classic</h3>
+                            <p>Paddle battle against AI. Reflect the ball and score!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('pong')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('breakout')">
+                        <div class="card-content">
+                            <div class="icon">🧱</div>
+                            <h3>Brick Breaker</h3>
+                            <p>Break all the bricks with your bouncing ball. Reach the top!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('breakout')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('memory')">
+                        <div class="card-content">
+                            <div class="icon">🧠</div>
+                            <h3>Memory Match</h3>
+                            <p>Match pairs of cards from memory. Test your focus!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('memory')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('simon')">
+                        <div class="card-content">
+                            <div class="icon">🎨</div>
+                            <h3>Simon Says</h3>
+                            <p>Repeat color sequences. Can you beat all the levels?</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('simon')">Play Now</button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card" onclick="launchGame('maze')">
+                        <div class="card-content">
+                            <div class="icon">🗺️</div>
+                            <h3>Maze Explorer</h3>
+                            <p>Navigate through procedurally generated mazes. Find the exit!</p>
+                            <button class="play-btn" onclick="event.stopPropagation(); launchGame('maze')">Play Now</button>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="game-card" onclick="launchGame('snake')">
-                    <div class="icon">🐍</div>
-                    <h3>Snake Master</h3>
-                    <p>Grow your snake by eating food. Avoid hitting walls and yourself. Use arrow keys to move.</p>
-                </div>
-                
-                <div class="game-card" onclick="launchGame('pong')">
-                    <div class="icon">🎾</div>
-                    <h3>Pong Classic</h3>
-                    <p>Paddle battle against AI. Reflect the ball and score points. Use UP/DOWN arrows.</p>
-                </div>
-                
-                <div class="game-card" onclick="launchGame('breakout')">
-                    <div class="icon">🧱</div>
-                    <h3>Brick Breaker</h3>
-                    <p>Break all the bricks with your ball. Catch power-ups and reach the top score. Use arrows to move.</p>
-                </div>
-                
-                <div class="game-card" onclick="launchGame('memory')">
-                    <div class="icon">🧠</div>
-                    <h3>Memory Match</h3>
-                    <p>Match pairs of cards from memory. Test your concentration and observation skills.</p>
-                </div>
-                
-                <div class="game-card" onclick="launchGame('simon')">
-                    <div class="icon">🎨</div>
-                    <h3>Simon Says</h3>
-                    <p>Repeat the color sequences. Watch carefully and click the right colors in order.</p>
-                </div>
-                
-                <div class="game-card" onclick="launchGame('maze')">
-                    <div class="icon">🗺️</div>
-                    <h3>Maze Explorer</h3>
-                    <p>Navigate through procedurally generated mazes. Reach the exit without hitting walls.</p>
-                </div>
+            </div>
+            
+            <div class="footer">
+                <p>💡 Press ESC at any time to access study materials • Made with ❤️ by Drew Pep</p>
             </div>
         </div>
         
-        <div class="footer">
-            <p>💡 Press ESC at any time to access study materials • Made with ❤️ by Drew Pep</p>
-        </div>
-    </div>
-    
-    <!-- WORKSPACE -->
-    <div id="workspace" class="container">
-        <button class="back-btn" onclick="exitWorkspace()">← Back to Games</button>
-        
-        <!-- Dash Game -->
-        <div id="game-dash" class="game-container">
-            <div class="game-info">Score: <span id="dash-score">0</span> | Press SPACE or Click to Jump</div>
-            <canvas id="gameCanvas" width="650" height="360"></canvas>
-        </div>
-
-        <!-- Shooter Game -->
-        <div id="game-shooter" class="game-container">
-            <div class="game-info">Score: <span id="shooter-score">0</span> | ARROWS to move, SPACE to fire</div>
-            <canvas id="gameCanvas" width="650" height="360"></canvas>
-        </div>
-
-        <!-- Snake Game -->
-        <div id="game-snake" class="game-container">
-            <div class="game-info">Score: <span id="snake-score">0</span> | Use Arrow Keys to Move</div>
-            <canvas id="gameCanvas" width="600" height="400"></canvas>
-        </div>
-
-        <!-- Pong Game -->
-        <div id="game-pong" class="game-container">
-            <div class="game-info">Pong - Use Arrow Keys Up/Down to Control Your Paddle</div>
-            <canvas id="gameCanvas" width="600" height="400"></canvas>
-        </div>
-
-        <!-- Breakout Game -->
-        <div id="game-breakout" class="game-container">
-            <div class="game-info">Score: <span id="breakout-score">0</span> | Lives: <span id="breakout-lives">3</span> | Use ARROWS to move paddle</div>
-            <canvas id="gameCanvas" width="600" height="400"></canvas>
-        </div>
-
-        <!-- Memory Game -->
-        <div id="game-memory" class="game-container">
-            <div class="score-display">Matches: <span id="memory-score">0</span> / 8</div>
-            <div class="memory-grid" id="memory-grid"></div>
-        </div>
-
-        <!-- Simon Game -->
-        <div id="game-simon" class="game-container">
-            <div class="score-display">Level: <span id="simon-level">1</span></div>
-            <div class="simon-grid">
-                <button class="simon-btn red" data-color="red"></button>
-                <button class="simon-btn blue" data-color="blue"></button>
-                <button class="simon-btn green" data-color="green"></button>
-                <button class="simon-btn yellow" data-color="yellow"></button>
+        <!-- WORKSPACE -->
+        <div id="workspace" class="container">
+            <button class="back-btn" onclick="exitWorkspace()">← Back to Games</button>
+            
+            <div id="game-dash" class="game-container">
+                <div class="game-info">Score: <span id="dash-score">0</span> | Press SPACE or Click to Jump</div>
+                <canvas id="gameCanvas" width="650" height="360"></canvas>
             </div>
-            <p style="color: #667eea; margin-top: 20px; font-weight: 600;">Watch the pattern and repeat it by clicking the buttons.</p>
-        </div>
 
-        <!-- Maze Game -->
-        <div id="game-maze" class="game-container">
-            <div class="game-info">Level: <span id="maze-level">1</span> | Use Arrow Keys to Navigate | Reach the Green Square!</div>
-            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            <div id="game-shooter" class="game-container">
+                <div class="game-info">Score: <span id="shooter-score">0</span> | ARROWS to move, SPACE to fire</div>
+                <canvas id="gameCanvas" width="650" height="360"></canvas>
+            </div>
+
+            <div id="game-snake" class="game-container">
+                <div class="game-info">Score: <span id="snake-score">0</span> | Use Arrow Keys to Move</div>
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
+
+            <div id="game-pong" class="game-container">
+                <div class="game-info">Pong - Use Arrow Keys Up/Down to Control Your Paddle</div>
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
+
+            <div id="game-breakout" class="game-container">
+                <div class="game-info">Score: <span id="breakout-score">0</span> | Lives: <span id="breakout-lives">3</span> | Use ARROWS to move paddle</div>
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
+
+            <div id="game-memory" class="game-container">
+                <div class="score-display">Matches: <span id="memory-score">0</span> / 8</div>
+                <div class="memory-grid" id="memory-grid"></div>
+            </div>
+
+            <div id="game-simon" class="game-container">
+                <div class="score-display">Level: <span id="simon-level">1</span></div>
+                <div class="simon-grid">
+                    <button class="simon-btn red" data-color="red"></button>
+                    <button class="simon-btn blue" data-color="blue"></button>
+                    <button class="simon-btn green" data-color="green"></button>
+                    <button class="simon-btn yellow" data-color="yellow"></button>
+                </div>
+                <p style="color: #667eea; margin-top: 20px; font-weight: 700;">Watch the pattern and repeat it by clicking the buttons.</p>
+            </div>
+
+            <div id="game-maze" class="game-container">
+                <div class="game-info">Level: <span id="maze-level">1</span> | Use Arrow Keys to Navigate | Reach the Green Square!</div>
+                <canvas id="gameCanvas" width="600" height="400"></canvas>
+            </div>
         </div>
     </div>
 
@@ -420,9 +611,6 @@
         let runtimeLoop = null;
         let currentGame = "";
 
-        // ==========================================
-        // UNIVERSAL ESCAPE PANIC ROUTINE
-        // ==========================================
         window.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (runtimeLoop) clearInterval(runtimeLoop);
@@ -444,7 +632,6 @@
             
             if (runtimeLoop) clearInterval(runtimeLoop);
             
-            // Hide all games
             document.querySelectorAll('.game-container').forEach(el => el.style.display = 'none');
             document.getElementById('game-' + gameType).style.display = 'block';
             
