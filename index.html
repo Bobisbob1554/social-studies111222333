@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open-Source Curriculum Support Hub</title>
+    <title>EduCore Analytics - Complete Game Suite</title>
     <style>
         :root {
             --primary: #34495e;
             --accent: #2980b9;
             --bg: #f8f9fa;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
         }
+        * { box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg);
@@ -27,7 +31,7 @@
             font-weight: bold;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -60,11 +64,13 @@
         .card h3 {
             margin-top: 0;
             color: var(--accent);
+            font-size: 16px;
         }
         .card p {
             color: #666;
             font-size: 14px;
             line-height: 1.5;
+            margin: 10px 0 0 0;
         }
         #workspace {
             display: none;
@@ -72,7 +78,6 @@
             border: 1px solid #e1e4e6;
             border-radius: 6px;
             padding: 20px;
-            text-align: center;
         }
         .btn {
             background-color: var(--primary);
@@ -88,9 +93,77 @@
         canvas {
             background: #111;
             display: block;
-            margin: 0 auto;
+            margin: 15px auto;
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 100%;
+            height: auto;
+        }
+        /* Game-specific layouts */
+        .game-container {
+            display: none;
+            width: 100%;
+        }
+        .game-info {
+            text-align: center;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .memory-card {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.1s;
+        }
+        .memory-card:hover { transform: scale(1.05); }
+        .memory-card.flipped {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        .simon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        .simon-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.1s;
+        }
+        .simon-btn:hover { opacity: 0.9; }
+        .simon-btn.red { background-color: #e74c3c; }
+        .simon-btn.blue { background-color: #3498db; }
+        .simon-btn.green { background-color: #27ae60; }
+        .simon-btn.yellow { background-color: #f39c12; }
+        .simon-btn.active { opacity: 1; transform: scale(1.1); }
+        .score-display {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 15px 0;
         }
         /* Panic Screen Overlay */
         #panic-screen {
@@ -106,45 +179,110 @@
     </style>
 </head>
 <body>
-
+    
+    <!-- MAIN HUB -->
     <div id="main-hub">
         <div class="navbar">
-            <span>EduCore Analytics v4.2</span>
+            <span>EduCore Analytics v5.0</span>
             <span style="font-size: 12px; opacity: 0.8;">Status: Operational</span>
         </div>
         
         <div class="container">
             <div class="notice-bar">
-                <strong>System Note:</strong> Please select an interactive kinetic data model below to begin your spatial processing and feedback loops. Press <strong>ESC</strong> at any time to return immediately to reading logs.
+                <strong>System Note:</strong> Select an interactive module below to begin your cognitive pattern analysis. Press <strong>ESC</strong> at any time to hide this interface.
             </div>
 
             <div class="grid">
+                <!-- Original Games -->
                 <div class="card" onclick="launchGame('snake')">
-                    <h3>Spatial Module Alpha (Snake)</h3>
-                    <p>Analyze grid-based optimization paths. Direct an expanding coordinate line to clean system data fragments without self-intersecting.</p>
+                    <h3>🐍 Spatial Module (Snake)</h3>
+                    <p>Analyze grid-based optimization paths. Direct an expanding coordinate line to collect data fragments.</p>
                 </div>
                 
                 <div class="card" onclick="launchGame('pong')">
-                    <h3>Kinetic Module Beta (Pong)</h3>
-                    <p>Calculate angles of reflection. Deflect an accelerating velocity vector against an automated calculation paddle. Use Up/Down arrows.</p>
+                    <h3>🎾 Kinetic Module (Pong)</h3>
+                    <p>Calculate angles of reflection. Deflect velocity vectors using paddle mechanics.</p>
+                </div>
+
+                <!-- New Games -->
+                <div class="card" onclick="launchGame('breakout')">
+                    <h3>🧱 Brick Breaker Module</h3>
+                    <p>Destroy all bricks by bouncing the ball. Catch power-ups for bonuses. Increase difficulty with each wave.</p>
+                </div>
+
+                <div class="card" onclick="launchGame('memory')">
+                    <h3>🧠 Memory Pattern Module</h3>
+                    <p>Match pairs of cards. Test spatial memory and pattern recognition under time pressure.</p>
+                </div>
+
+                <div class="card" onclick="launchGame('simon')">
+                    <h3>🎨 Simon Sequence Module</h3>
+                    <p>Repeat increasingly complex color sequences. Train pattern recall and reaction time.</p>
+                </div>
+
+                <div class="card" onclick="launchGame('maze')">
+                    <h3>🗺️ Maze Navigation Module</h3>
+                    <p>Navigate through procedurally generated mazes. Press arrow keys to move through the maze.</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- WORKSPACE -->
     <div id="workspace" class="container">
         <button class="btn" onclick="exitWorkspace()">← Return to Module Directory</button>
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-        <p style="color: #999; font-size: 12px; margin-top: 15px;">Controls: Arrow Keys. Tap Escape to instantly hide this interface.</p>
+        
+        <!-- Snake Game -->
+        <div id="game-snake" class="game-container">
+            <div class="game-info">Snake Game - Use Arrow Keys to Move | Score: <span id="snake-score">0</span></div>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+        </div>
+
+        <!-- Pong Game -->
+        <div id="game-pong" class="game-container">
+            <div class="game-info">Pong - Use Arrow Keys Up/Down to Control Left Paddle</div>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+        </div>
+
+        <!-- Breakout Game -->
+        <div id="game-breakout" class="game-container">
+            <div class="game-info">Breakout - Destroy All Bricks | Score: <span id="breakout-score">0</span> | Lives: <span id="breakout-lives">3</span></div>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+        </div>
+
+        <!-- Memory Game -->
+        <div id="game-memory" class="game-container">
+            <div class="score-display">Matches: <span id="memory-score">0</span> / 8</div>
+            <div class="memory-grid" id="memory-grid"></div>
+        </div>
+
+        <!-- Simon Game -->
+        <div id="game-simon" class="game-container">
+            <div class="score-display">Level: <span id="simon-level">1</span></div>
+            <div class="simon-grid">
+                <button class="simon-btn red" data-color="red"></button>
+                <button class="simon-btn blue" data-color="blue"></button>
+                <button class="simon-btn green" data-color="green"></button>
+                <button class="simon-btn yellow" data-color="yellow"></button>
+            </div>
+            <p style="text-align: center; color: #666; margin-top: 20px;">Watch the pattern and repeat it by clicking the buttons.</p>
+        </div>
+
+        <!-- Maze Game -->
+        <div id="game-maze" class="game-container">
+            <div class="game-info">Maze - Use Arrow Keys to Navigate | Level: <span id="maze-level">1</span></div>
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+        </div>
     </div>
 
+    <!-- PANIC SCREEN -->
     <div id="panic-screen">
         <h1 style="color:#2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">Section 4.12: Quantitative Analysis of Historical Documents</h1>
         <p style="font-size: 16px; line-height: 1.6; color: #333;">
-            In evaluating primary source materials from the late industrial era, researchers must account for regional economic variations and literacy rates. Quantitative analysis involves tracking repeating semantic structures across multiple text bases to eliminate individual scribe bias.
+            In evaluating primary source materials from the late industrial era, researchers must account for regional economic variations and literacy rates. Quantitative analysis involves tracking demographic patterns across multiple datasets.
         </p>
         <p style="font-size: 16px; line-height: 1.6; color: #333;">
-            Data gathered from municipal shipping logs indicates a 14% deviation in projected trade values between the third and fourth quarters. This anomaly is widely attributed to localized seasonal disruptions rather than systemic macroeconomic policy shifts.
+            Data gathered from municipal shipping logs indicates a 14% deviation in projected trade values between quarters. This anomaly is widely attributed to localized seasonal variations and merchant guild policies.
         </p>
         <button onclick="hidePanic()" style="margin-top: 40px; background: none; border: 1px solid #ccc; color: #999; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Resume Session</button>
     </div>
@@ -154,12 +292,14 @@
         const workspace = document.getElementById('workspace');
         const panicScreen = document.getElementById('panic-screen');
         const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas ? canvas.getContext('2d') : null;
         
         let activeLoop = null;
         let currentGame = "";
 
-        // Panic Button Handler (ESC key)
+        // ==========================================
+        // PANIC BUTTON (ESC KEY)
+        // ==========================================
         window.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (activeLoop) clearInterval(activeLoop);
@@ -181,10 +321,17 @@
             
             if (activeLoop) clearInterval(activeLoop);
             
-            if (gameType === 'snake') {
-                initSnake();
-            } else if (gameType === 'pong') {
-                initPong();
+            // Hide all games
+            document.querySelectorAll('.game-container').forEach(el => el.style.display = 'none');
+            document.getElementById('game-' + gameType).style.display = 'block';
+            
+            switch(gameType) {
+                case 'snake': initSnake(); break;
+                case 'pong': initPong(); break;
+                case 'breakout': initBreakout(); break;
+                case 'memory': initMemory(); break;
+                case 'simon': initSimon(); break;
+                case 'maze': initMaze(); break;
             }
         }
 
@@ -195,13 +342,14 @@
         }
 
         // ==========================================
-        // GAME MODULE 1: SNAKE
+        // GAME 1: SNAKE
         // ==========================================
         function initSnake() {
             let size = 20;
             let snake = [{x: 200, y: 200}, {x: 180, y: 200}];
             let dx = size, dy = 0;
             let foodX, foodY;
+            let score = 0;
 
             function placeFood() {
                 foodX = Math.floor(Math.random() * (canvas.width / size)) * size;
@@ -219,19 +367,22 @@
             activeLoop = setInterval(() => {
                 let head = {x: snake[0].x + dx, y: snake[0].y + dy};
                 
-                // Wall collision
                 if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-                    exitWorkspace(); alert('Module Recalibrating (Game Over)'); return;
+                    clearInterval(activeLoop);
+                    alert(`Game Over! Final Score: ${score}`);
+                    exitWorkspace();
+                    return;
                 }
                 
                 snake.unshift(head);
                 if (head.x === foodX && head.y === foodY) {
+                    score++;
+                    document.getElementById('snake-score').innerText = score;
                     placeFood();
                 } else {
                     snake.pop();
                 }
 
-                // Draw
                 ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#2ecc71'; snake.forEach(p => ctx.fillRect(p.x, p.y, size-1, size-1));
                 ctx.fillStyle = '#e74c3c'; ctx.fillRect(foodX, foodY, size-1, size-1);
@@ -239,7 +390,7 @@
         }
 
         // ==========================================
-        // GAME MODULE 2: PONG
+        // GAME 2: PONG
         // ==========================================
         function initPong() {
             let padH = 80, padW = 10;
@@ -252,26 +403,24 @@
             window.onkeyup = e => keys[e.key] = false;
 
             activeLoop = setInterval(() => {
-                // Controls
                 if (keys['ArrowUp'] && p1Y > 0) p1Y -= 5;
                 if (keys['ArrowDown'] && p1Y < canvas.height - padH) p1Y += 5;
                 
-                // Simple AI Tracker
                 if (ballY < p2Y + padH/2 && p2Y > 0) p2Y -= 4;
                 if (ballY > p2Y + padH/2 && p2Y < canvas.height - padH) p2Y += 4;
 
-                // Move Ball
                 ballX += ballVX; ballY += ballVY;
 
-                // Wall bounces
                 if (ballY <= 0 || ballY >= canvas.height) ballVY = -ballVY;
 
-                // Paddle collisions
                 if (ballX <= padW + 10) {
                     if (ballY > p1Y && ballY < p1Y + padH) {
-                        ballVX = -ballVX * 1.05; // speed up slightly
+                        ballVX = -ballVX * 1.05;
                     } else {
-                        exitWorkspace(); alert('Module Recalibrating (Game Over)'); return;
+                        clearInterval(activeLoop);
+                        alert('Game Over!');
+                        exitWorkspace();
+                        return;
                     }
                 }
                 if (ballX >= canvas.width - padW - 10) {
@@ -279,12 +428,321 @@
                     else { ballX = 300; ballY = 200; ballVX = -4; }
                 }
 
-                // Draw
                 ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#fff';
-                ctx.fillRect(10, p1Y, padW, padH); // P1
-                ctx.fillRect(canvas.width - 20, p2Y, padW, padH); // AI
-                ctx.fillRect(ballX, ballY, 8, 8); // Ball
+                ctx.fillRect(10, p1Y, padW, padH);
+                ctx.fillRect(canvas.width - 20, p2Y, padW, padH);
+                ctx.fillRect(ballX, ballY, 8, 8);
+            }, 1000/60);
+        }
+
+        // ==========================================
+        // GAME 3: BREAKOUT
+        // ==========================================
+        function initBreakout() {
+            let paddleX = canvas.width / 2 - 40;
+            let paddleY = canvas.height - 20;
+            let paddleW = 80, paddleH = 10;
+            let ballX = canvas.width / 2, ballY = canvas.height - 40;
+            let ballVX = 3, ballVY = -3;
+            let ballRadius = 5;
+            let lives = 3;
+            let score = 0;
+            let keys = {};
+
+            // Create bricks
+            let bricks = [];
+            for (let i = 0; i < 6; i++) {
+                for (let j = 0; j < 5; j++) {
+                    bricks.push({
+                        x: i * 100 + 5,
+                        y: j * 20 + 10,
+                        w: 95,
+                        h: 15,
+                        active: true
+                    });
+                }
+            }
+
+            window.onkeydown = e => keys[e.key] = true;
+            window.onkeyup = e => keys[e.key] = false;
+
+            activeLoop = setInterval(() => {
+                if (keys['ArrowLeft'] && paddleX > 0) paddleX -= 7;
+                if (keys['ArrowRight'] && paddleX < canvas.width - paddleW) paddleX += 7;
+
+                ballX += ballVX;
+                ballY += ballVY;
+
+                // Wall collisions
+                if (ballX - ballRadius <= 0 || ballX + ballRadius >= canvas.width) ballVX = -ballVX;
+                if (ballY - ballRadius <= 0) ballVY = -ballVY;
+
+                // Paddle collision
+                if (ballY + ballRadius >= paddleY && ballX > paddleX && ballX < paddleX + paddleW) {
+                    ballVY = -ballVY;
+                }
+
+                // Brick collisions
+                bricks.forEach(brick => {
+                    if (brick.active && ballX > brick.x && ballX < brick.x + brick.w && 
+                        ballY > brick.y && ballY < brick.y + brick.h) {
+                        brick.active = false;
+                        ballVY = -ballVY;
+                        score += 10;
+                    }
+                });
+
+                // Bottom collision
+                if (ballY > canvas.height) {
+                    lives--;
+                    if (lives <= 0) {
+                        clearInterval(activeLoop);
+                        alert(`Game Over! Final Score: ${score}`);
+                        exitWorkspace();
+                        return;
+                    }
+                    ballX = canvas.width / 2;
+                    ballY = canvas.height - 40;
+                }
+
+                // Check win
+                if (bricks.every(b => !b.active)) {
+                    clearInterval(activeLoop);
+                    alert(`You Won! Score: ${score}`);
+                    exitWorkspace();
+                    return;
+                }
+
+                // Draw
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#3498db';
+                bricks.forEach(b => b.active && ctx.fillRect(b.x, b.y, b.w, b.h));
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(paddleX, paddleY, paddleW, paddleH);
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+                ctx.fill();
+
+                document.getElementById('breakout-score').innerText = score;
+                document.getElementById('breakout-lives').innerText = lives;
+            }, 1000/60);
+        }
+
+        // ==========================================
+        // GAME 4: MEMORY
+        // ==========================================
+        function initMemory() {
+            const symbols = ['🎨', '🎭', '🎪', '🎯', '🎸', '🎲', '🎰', '🎳'];
+            const cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+            
+            let flipped = [];
+            let matches = 0;
+            let locked = false;
+
+            const gridEl = document.getElementById('memory-grid');
+            gridEl.innerHTML = '';
+
+            cards.forEach((symbol, idx) => {
+                const card = document.createElement('button');
+                card.className = 'memory-card';
+                card.innerText = '?';
+                card.dataset.index = idx;
+                card.dataset.symbol = symbol;
+                
+                card.addEventListener('click', () => {
+                    if (locked || flipped.includes(idx) || card.classList.contains('flipped')) return;
+                    
+                    card.classList.add('flipped');
+                    card.innerText = symbol;
+                    flipped.push(idx);
+
+                    if (flipped.length === 2) {
+                        locked = true;
+                        const [idx1, idx2] = flipped;
+                        const card1 = gridEl.children[idx1];
+                        const card2 = gridEl.children[idx2];
+
+                        if (card1.dataset.symbol === card2.dataset.symbol) {
+                            matches++;
+                            document.getElementById('memory-score').innerText = matches;
+                            flipped = [];
+                            locked = false;
+
+                            if (matches === 8) {
+                                setTimeout(() => {
+                                    alert('You Won! All pairs matched!');
+                                    exitWorkspace();
+                                }, 500);
+                            }
+                        } else {
+                            setTimeout(() => {
+                                card1.classList.remove('flipped');
+                                card2.classList.remove('flipped');
+                                card1.innerText = '?';
+                                card2.innerText = '?';
+                                flipped = [];
+                                locked = false;
+                            }, 1000);
+                        }
+                    }
+                });
+
+                gridEl.appendChild(card);
+            });
+        }
+
+        // ==========================================
+        // GAME 5: SIMON SAYS
+        // ==========================================
+        function initSimon() {
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            let sequence = [];
+            let playerSequence = [];
+            let level = 1;
+            let gameActive = true;
+
+            const buttons = {
+                red: document.querySelector('[data-color="red"]'),
+                blue: document.querySelector('[data-color="blue"]'),
+                green: document.querySelector('[data-color="green"]'),
+                yellow: document.querySelector('[data-color="yellow"]')
+            };
+
+            function playSequence() {
+                gameActive = false;
+                let delay = 600;
+
+                sequence.forEach((color, idx) => {
+                    setTimeout(() => {
+                        flashButton(color);
+                    }, delay + idx * 600);
+                });
+
+                gameActive = true;
+                playerSequence = [];
+            }
+
+            function flashButton(color) {
+                buttons[color].classList.add('active');
+                setTimeout(() => buttons[color].classList.remove('active'), 300);
+            }
+
+            function checkSequence() {
+                let currentIdx = playerSequence.length - 1;
+                if (playerSequence[currentIdx] !== sequence[currentIdx]) {
+                    alert(`Game Over! You reached level ${level}!`);
+                    exitWorkspace();
+                    return false;
+                }
+
+                if (playerSequence.length === sequence.length) {
+                    level++;
+                    document.getElementById('simon-level').innerText = level;
+                    setTimeout(() => {
+                        sequence.push(colors[Math.floor(Math.random() * 4)]);
+                        playSequence();
+                    }, 1000);
+                }
+                return true;
+            }
+
+            // Add click handlers
+            Object.entries(buttons).forEach(([color, btn]) => {
+                btn.addEventListener('click', () => {
+                    if (!gameActive) return;
+                    playerSequence.push(color);
+                    flashButton(color);
+                    checkSequence();
+                });
+            });
+
+            // Start game
+            sequence.push(colors[Math.floor(Math.random() * 4)]);
+            setTimeout(() => playSequence(), 1000);
+        }
+
+        // ==========================================
+        // GAME 6: MAZE
+        // ==========================================
+        function initMaze() {
+            let mazeLevel = 1;
+            let playerX = 10;
+            let playerY = 10;
+            let cellSize = 20;
+            let keys = {};
+
+            function generateMaze(width, height) {
+                let maze = Array(height).fill().map(() => Array(width).fill(1));
+                
+                function carvePath(x, y) {
+                    maze[y][x] = 0;
+                    const directions = [[0, -2], [2, 0], [0, 2], [-2, 0]].sort(() => Math.random() - 0.5);
+                    
+                    directions.forEach(([dx, dy]) => {
+                        const nx = x + dx, ny = y + dy;
+                        if (nx > 0 && nx < width - 1 && ny > 0 && ny < height - 1 && maze[ny][nx] === 1) {
+                            maze[y + dy/2][x + dx/2] = 0;
+                            carvePath(nx, ny);
+                        }
+                    });
+                }
+                
+                carvePath(1, 1);
+                maze[1][1] = 0;
+                maze[height - 2][width - 2] = 0;
+                return maze;
+            }
+
+            let maze = generateMaze(30, 20);
+            playerX = 1;
+            playerY = 1;
+
+            window.onkeydown = e => keys[e.key] = true;
+            window.onkeyup = e => keys[e.key] = false;
+
+            activeLoop = setInterval(() => {
+                let newX = playerX;
+                let newY = playerY;
+
+                if (keys['ArrowLeft']) newX--;
+                if (keys['ArrowRight']) newX++;
+                if (keys['ArrowUp']) newY--;
+                if (keys['ArrowDown']) newY++;
+
+                if (maze[newY] && maze[newY][newX] === 0) {
+                    playerX = newX;
+                    playerY = newY;
+                }
+
+                // Check if reached exit
+                if (playerX === 28 && playerY === 18) {
+                    mazeLevel++;
+                    maze = generateMaze(30, 20);
+                    playerX = 1;
+                    playerY = 1;
+                    document.getElementById('maze-level').innerText = mazeLevel;
+                }
+
+                // Draw
+                ctx.fillStyle = '#111';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                for (let y = 0; y < maze.length; y++) {
+                    for (let x = 0; x < maze[0].length; x++) {
+                        if (maze[y][x] === 1) {
+                            ctx.fillStyle = '#555';
+                            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        }
+                    }
+                }
+
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(28 * cellSize, 18 * cellSize, cellSize, cellSize);
+
+                ctx.fillStyle = '#f39c12';
+                ctx.fillRect(playerX * cellSize, playerY * cellSize, cellSize, cellSize);
             }, 1000/60);
         }
     </script>
