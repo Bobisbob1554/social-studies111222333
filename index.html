@@ -3,113 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduCore Analytics - Complete Game Suite</title>
+    <title>EduCore Analytics - Complete Game Suite v6.0</title>
     <style>
         :root {
+            --bg-dark: #121214;
+            --panel-bg: #1a1a1e;
+            --accent-cyan: #00ffcc;
+            --accent-pink: #ff007f;
+            --text-light: #e2e8f0;
             --primary: #34495e;
-            --accent: #2980b9;
-            --bg: #f8f9fa;
             --success: #27ae60;
-            --danger: #e74c3c;
-            --warning: #f39c12;
         }
         * { box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: #333;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             margin: 0;
             padding: 0;
+            user-select: none;
+            overflow-x: hidden;
         }
         .navbar {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px 30px;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid #2d2d34;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
+        }
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
         }
         .container {
-            max-width: 1100px;
-            margin: 30px auto;
+            max-width: 1200px;
+            margin: 40px auto;
             padding: 0 20px;
         }
-        .notice-bar {
-            background-color: #e8f4fd;
-            border-left: 5px solid var(--accent);
-            padding: 15px;
+        .alert-box {
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 6px;
+            padding: 15px 20px;
             margin-bottom: 30px;
-            border-radius: 4px;
             font-size: 14px;
+            color: #a7f3d0;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
         }
         .card {
-            background: white;
-            border: 1px solid #e1e4e6;
-            border-radius: 6px;
-            padding: 20px;
+            background: var(--panel-bg);
+            border: 1px solid #2d2d34;
+            border-radius: 8px;
+            padding: 30px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-color: var(--accent-pink);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         .card h3 {
             margin-top: 0;
-            color: var(--accent);
-            font-size: 16px;
+            color: #fff;
+            font-size: 20px;
         }
         .card p {
-            color: #666;
+            color: #94a3b8;
             font-size: 14px;
-            line-height: 1.5;
-            margin: 10px 0 0 0;
+            line-height: 1.6;
         }
         #workspace {
             display: none;
-            background: white;
-            border: 1px solid #e1e4e6;
-            border-radius: 6px;
-            padding: 20px;
+            background: var(--panel-bg);
+            border: 1px solid #2d2d34;
+            border-radius: 8px;
+            padding: 25px;
         }
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .btn:hover { background-color: #2c3e50; }
-        canvas {
-            background: #111;
-            display: block;
-            margin: 15px auto;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            max-width: 100%;
-            height: auto;
-        }
-        /* Game-specific layouts */
         .game-container {
             display: none;
             width: 100%;
+            text-align: center;
+        }
+        .btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--accent-cyan);
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        }
+        canvas {
+            background: #09090b;
+            display: block;
+            margin: 20px auto;
+            border-radius: 6px;
+            border: 2px solid #2d2d34;
+            max-width: 100%;
+            height: auto;
         }
         .game-info {
             text-align: center;
-            color: #666;
+            color: #a7f3d0;
             margin-bottom: 15px;
             font-size: 14px;
         }
+        .score-display {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            margin: 15px 0;
+        }
+        /* Memory Game */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -120,7 +140,7 @@
         .memory-card {
             width: 100%;
             aspect-ratio: 1;
-            background: linear-gradient(135deg, #2980b9, #3498db);
+            background: linear-gradient(135deg, #ff007f, #ff4da6);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -131,9 +151,10 @@
         }
         .memory-card:hover { transform: scale(1.05); }
         .memory-card.flipped {
-            background: #ecf0f1;
-            color: #2c3e50;
+            background: #2d2d34;
+            color: #a7f3d0;
         }
+        /* Simon Game */
         .simon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -154,75 +175,84 @@
         }
         .simon-btn:hover { opacity: 0.9; }
         .simon-btn.red { background-color: #e74c3c; }
-        .simon-btn.blue { background-color: #3498db; }
+        .simon-btn.blue { background-color: #00ffcc; }
         .simon-btn.green { background-color: #27ae60; }
         .simon-btn.yellow { background-color: #f39c12; }
         .simon-btn.active { opacity: 1; transform: scale(1.1); }
-        .score-display {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--accent);
-            margin: 15px 0;
-        }
-        /* Panic Screen Overlay */
+        /* Panic Screen */
         #panic-screen {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: white;
-            padding: 40px;
+            background: #ffffff;
+            color: #1e293b;
+            padding: 60px;
             box-sizing: border-box;
+            z-index: 99999;
             overflow-y: auto;
-            z-index: 9999;
         }
     </style>
 </head>
 <body>
-    
+
     <!-- MAIN HUB -->
     <div id="main-hub">
         <div class="navbar">
-            <span>EduCore Analytics v5.0</span>
-            <span style="font-size: 12px; opacity: 0.8;">Status: Operational</span>
+            <span class="logo-text">QUANTUM LABS v10.9</span>
+            <span style="font-size: 13px; color: #94a3b8;">User Check: Validated</span>
         </div>
         
         <div class="container">
-            <div class="notice-bar">
-                <strong>System Note:</strong> Select an interactive module below to begin your cognitive pattern analysis. Press <strong>ESC</strong> at any time to hide this interface.
+            <div class="alert-box">
+                <strong>System Configuration:</strong> Interactive visual matrix engine active. Hit <strong>ESC</strong> at any point to load structural references over this active partition instantly.
             </div>
 
             <div class="grid">
                 <!-- Original Games -->
-                <div class="card" onclick="launchGame('snake')">
-                    <h3>🐍 Spatial Module (Snake)</h3>
-                    <p>Analyze grid-based optimization paths. Direct an expanding coordinate line to collect data fragments.</p>
+                <div class="card" onclick="launchGame('dash')">
+                    <h3>🏃 Kinetic Momentum (Dash)</h3>
+                    <p>Analyze synchronized spatial velocity loops. Jump over incoming obstacles to test geometric reaction variables. SPACE or Click to jump.</p>
                 </div>
                 
+                <div class="card" onclick="launchGame('shooter')">
+                    <h3>🎯 Tactical Vector (Shooter)</h3>
+                    <p>Calculate impact angles. Deploy interceptors to neutralize incoming blocks. ARROWS to move, SPACE to fire.</p>
+                </div>
+
+                <!-- Snake Game -->
+                <div class="card" onclick="launchGame('snake')">
+                    <h3>🐍 Spatial Module (Snake)</h3>
+                    <p>Analyze grid-based optimization paths. Collect food without self-intersecting. Arrow Keys to move.</p>
+                </div>
+                
+                <!-- Pong Game -->
                 <div class="card" onclick="launchGame('pong')">
                     <h3>🎾 Kinetic Module (Pong)</h3>
-                    <p>Calculate angles of reflection. Deflect velocity vectors using paddle mechanics.</p>
+                    <p>Calculate angles of reflection. Deflect the ball with your paddle against AI. UP/DOWN arrows to control.</p>
                 </div>
 
-                <!-- New Games -->
+                <!-- Breakout Game -->
                 <div class="card" onclick="launchGame('breakout')">
                     <h3>🧱 Brick Breaker Module</h3>
-                    <p>Destroy all bricks by bouncing the ball. Catch power-ups for bonuses. Increase difficulty with each wave.</p>
+                    <p>Destroy all bricks by bouncing the ball. Catch power-ups for bonuses. ARROWS to move paddle.</p>
                 </div>
 
+                <!-- Memory Game -->
                 <div class="card" onclick="launchGame('memory')">
                     <h3>🧠 Memory Pattern Module</h3>
                     <p>Match pairs of cards. Test spatial memory and pattern recognition under time pressure.</p>
                 </div>
 
+                <!-- Simon Game -->
                 <div class="card" onclick="launchGame('simon')">
                     <h3>🎨 Simon Sequence Module</h3>
                     <p>Repeat increasingly complex color sequences. Train pattern recall and reaction time.</p>
                 </div>
 
+                <!-- Maze Game -->
                 <div class="card" onclick="launchGame('maze')">
                     <h3>🗺️ Maze Navigation Module</h3>
-                    <p>Navigate through procedurally generated mazes. Press arrow keys to move through the maze.</p>
+                    <p>Navigate through procedurally generated mazes. Arrow Keys to move through passages.</p>
                 </div>
             </div>
         </div>
@@ -230,11 +260,23 @@
 
     <!-- WORKSPACE -->
     <div id="workspace" class="container">
-        <button class="btn" onclick="exitWorkspace()">← Return to Module Directory</button>
+        <button class="btn" onclick="exitWorkspace()">← Terminate Session & Return</button>
         
+        <!-- Dash Game -->
+        <div id="game-dash" class="game-container">
+            <div class="game-info">Sync Velocity Score: <span id="dash-score">0</span> | Press SPACE or Click to Jump</div>
+            <canvas id="gameCanvas" width="650" height="360"></canvas>
+        </div>
+
+        <!-- Shooter Game -->
+        <div id="game-shooter" class="game-container">
+            <div class="game-info">Intercept Tally: <span id="shooter-score">0</span> | ARROWS to move, SPACE to fire</div>
+            <canvas id="gameCanvas" width="650" height="360"></canvas>
+        </div>
+
         <!-- Snake Game -->
         <div id="game-snake" class="game-container">
-            <div class="game-info">Snake Game - Use Arrow Keys to Move | Score: <span id="snake-score">0</span></div>
+            <div class="game-info">Snake Game - Use Arrow Keys | Score: <span id="snake-score">0</span></div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
         </div>
 
@@ -265,7 +307,7 @@
                 <button class="simon-btn green" data-color="green"></button>
                 <button class="simon-btn yellow" data-color="yellow"></button>
             </div>
-            <p style="text-align: center; color: #666; margin-top: 20px;">Watch the pattern and repeat it by clicking the buttons.</p>
+            <p style="color: #94a3b8; margin-top: 20px;">Watch the pattern and repeat it by clicking the buttons.</p>
         </div>
 
         <!-- Maze Game -->
@@ -277,55 +319,57 @@
 
     <!-- PANIC SCREEN -->
     <div id="panic-screen">
-        <h1 style="color:#2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">Section 4.12: Quantitative Analysis of Historical Documents</h1>
-        <p style="font-size: 16px; line-height: 1.6; color: #333;">
-            In evaluating primary source materials from the late industrial era, researchers must account for regional economic variations and literacy rates. Quantitative analysis involves tracking demographic patterns across multiple datasets.
+        <h1 style="font-size: 28px; border-bottom: 2px solid #cbd5e1; padding-bottom: 12px; margin-top: 0;">Chapter 7.4: Covalent Bonding and Molecular Orbitals</h1>
+        <p style="font-size: 16px; line-height: 1.7; color: #334155;">
+            Unlike ionic structures where valence shells exchange electron structures completely, covalent configurations achieve atomic parity through mutual orbital sharing. The electronegativity differential (Δχ) between constituent elements determines the dipole distribution across the bond vector.
         </p>
-        <p style="font-size: 16px; line-height: 1.6; color: #333;">
-            Data gathered from municipal shipping logs indicates a 14% deviation in projected trade values between quarters. This anomaly is widely attributed to localized seasonal variations and merchant guild policies.
+        <p style="font-size: 16px; line-height: 1.7; color: #334155;">
+            When Δχ remains beneath a critical threshold of approximately 1.7, the compound exhibits non-polar characteristics. Sigma (σ) bonds represent localized orbital overlaps along the primary internuclear vector, whereas pi (π) bonds arise via parallel p-orbital arrays situated above and below the bonding axis plane.
         </p>
-        <button onclick="hidePanic()" style="margin-top: 40px; background: none; border: 1px solid #ccc; color: #999; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Resume Session</button>
+        <button onclick="restoreApp()" style="margin-top: 50px; opacity: 0.1; background: none; border: 1px solid #ccc; padding: 5px; cursor: pointer;">Reinitialize Feed</button>
     </div>
 
     <script>
-        const mainHub = document.getElementById('main-hub');
+        const hub = document.getElementById('main-hub');
         const workspace = document.getElementById('workspace');
-        const panicScreen = document.getElementById('panic-screen');
+        const panic = document.getElementById('panic-screen');
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
         
-        let activeLoop = null;
+        let runtimeLoop = null;
         let currentGame = "";
 
         // ==========================================
-        // PANIC BUTTON (ESC KEY)
+        // UNIVERSAL ESCAPE PANIC ROUTINE
         // ==========================================
         window.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                if (activeLoop) clearInterval(activeLoop);
+                if (runtimeLoop) clearInterval(runtimeLoop);
+                hub.style.display = 'none';
                 workspace.style.display = 'none';
-                mainHub.style.display = 'none';
-                panicScreen.style.display = 'block';
+                panic.style.display = 'block';
             }
         });
 
-        function hidePanic() {
-            panicScreen.style.display = 'none';
-            mainHub.style.display = 'block';
+        function restoreApp() {
+            panic.style.display = 'none';
+            hub.style.display = 'block';
         }
 
         function launchGame(gameType) {
-            mainHub.style.display = 'none';
+            hub.style.display = 'none';
             workspace.style.display = 'block';
             currentGame = gameType;
             
-            if (activeLoop) clearInterval(activeLoop);
+            if (runtimeLoop) clearInterval(runtimeLoop);
             
             // Hide all games
             document.querySelectorAll('.game-container').forEach(el => el.style.display = 'none');
             document.getElementById('game-' + gameType).style.display = 'block';
             
             switch(gameType) {
+                case 'dash': runDashEngine(); break;
+                case 'shooter': runVectorEngine(); break;
                 case 'snake': initSnake(); break;
                 case 'pong': initPong(); break;
                 case 'breakout': initBreakout(); break;
@@ -336,13 +380,176 @@
         }
 
         function exitWorkspace() {
-            if (activeLoop) clearInterval(activeLoop);
+            if (runtimeLoop) clearInterval(runtimeLoop);
             workspace.style.display = 'none';
-            mainHub.style.display = 'block';
+            hub.style.display = 'block';
         }
 
         // ==========================================
-        // GAME 1: SNAKE
+        // GAME 1: DASH ENGINE
+        // ==========================================
+        function runDashEngine() {
+            let playerY = 280;
+            let playerVelocityY = 0;
+            let isJumping = false;
+            const gravity = 0.6;
+            const floorY = 280;
+
+            let obstacles = [];
+            let score = 0;
+            let gameSpeed = 5;
+            let tick = 0;
+
+            window.onkeydown = (e) => {
+                if ((e.code === 'Space' || e.code === 'ArrowUp') && !isJumping) {
+                    playerVelocityY = -11;
+                    isJumping = true;
+                }
+            };
+            canvas.onmousedown = () => {
+                if (!isJumping) {
+                    playerVelocityY = -11;
+                    isJumping = true;
+                }
+            };
+
+            runtimeLoop = setInterval(() => {
+                tick++;
+                
+                playerVelocityY += gravity;
+                playerY += playerVelocityY;
+
+                if (playerY >= floorY) {
+                    playerY = floorY;
+                    playerVelocityY = 0;
+                    isJumping = false;
+                }
+
+                if (tick % 80 === 0) {
+                    obstacles.push({ x: canvas.width, w: 20, h: 26 });
+                    if(gameSpeed < 10) gameSpeed += 0.2;
+                }
+
+                ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.strokeStyle = '#00ffcc'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(0, 310); ctx.lineTo(canvas.width, 310); ctx.stroke();
+
+                ctx.fillStyle = '#ff007f';
+                ctx.fillRect(80, playerY, 30, 30);
+                ctx.fillStyle = '#fff'; ctx.fillRect(88, playerY + 8, 14, 14);
+
+                for (let i = obstacles.length - 1; i >= 0; i--) {
+                    obstacles[i].x -= gameSpeed;
+
+                    ctx.fillStyle = '#00ffcc';
+                    ctx.beginPath();
+                    ctx.moveTo(obstacles[i].x, 310);
+                    ctx.lineTo(obstacles[i].x + obstacles[i].w / 2, 310 - obstacles[i].h);
+                    ctx.lineTo(obstacles[i].x + obstacles[i].w, 310);
+                    ctx.fill();
+
+                    if (obstacles[i].x < 110 && obstacles[i].x + obstacles[i].w > 80) {
+                        if (playerY + 30 > 310 - obstacles[i].h) {
+                            clearInterval(runtimeLoop);
+                            alert(`Matrix Sync Failure. Distance Traversed: ${score}`);
+                            exitWorkspace();
+                            return;
+                        }
+                    }
+
+                    if (obstacles[i].x === 75) score++;
+                    if (obstacles[i].x < -30) obstacles.splice(i, 1);
+                }
+
+                ctx.fillStyle = '#fff'; ctx.font = '16px monospace';
+                ctx.fillText(`Sync Velocity Score: ${score}`, 25, 35);
+                document.getElementById('dash-score').innerText = score;
+            }, 1000 / 60);
+        }
+
+        // ==========================================
+        // GAME 2: SHOOTER ENGINE
+        // ==========================================
+        function runVectorEngine() {
+            let shipX = 300;
+            let keys = {};
+            let lasers = [];
+            let enemies = [];
+            let waveCount = 0;
+            let score = 0;
+
+            window.onkeydown = (e) => {
+                keys[e.code] = true;
+                if (e.code === 'Space') {
+                    lasers.push({ x: shipX + 18, y: 310 });
+                }
+            };
+            window.onkeyup = (e) => keys[e.code] = false;
+
+            runtimeLoop = setInterval(() => {
+                waveCount++;
+
+                if (keys['ArrowLeft'] && shipX > 10) shipX -= 5;
+                if (keys['ArrowRight'] && shipX < canvas.width - 50) shipX += 5;
+
+                if (waveCount % 50 === 0) {
+                    let randX = Math.floor(Math.random() * (canvas.width - 40));
+                    enemies.push({ x: randX, y: -30, w: 35, h: 25, hp: 2 });
+                }
+
+                ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#00ffcc';
+                ctx.fillRect(shipX, 320, 40, 15);
+                ctx.fillRect(shipX + 15, 310, 10, 10);
+
+                for (let l = lasers.length - 1; l >= 0; l--) {
+                    lasers[l].y -= 7;
+                    ctx.fillStyle = '#ff007f';
+                    ctx.fillRect(lasers[l].x, lasers[l].y, 4, 12);
+
+                    if (lasers[l].y < -20) lasers.splice(l, 1);
+                }
+
+                for (let e = enemies.length - 1; e >= 0; e--) {
+                    enemies[e].y += 1.5;
+
+                    ctx.fillStyle = enemies[e].hp > 1 ? '#718096' : '#e53e3e';
+                    ctx.fillRect(enemies[e].x, enemies[e].y, enemies[e].w, enemies[e].h);
+                    
+                    if (enemies[e].y > 310) {
+                        clearInterval(runtimeLoop);
+                        alert(`Perimeter Compromised. Score: ${score}`);
+                        exitWorkspace();
+                        return;
+                    }
+
+                    for (let l = lasers.length - 1; l >= 0; l--) {
+                        if (lasers[l].x > enemies[e].x && lasers[l].x < enemies[e].x + enemies[e].w) {
+                            if (lasers[l].y > enemies[e].y && lasers[l].y < enemies[e].y + enemies[e].h) {
+                                lasers.splice(l, 1);
+                                enemies[e].hp--;
+                                
+                                if (enemies[e].hp <= 0) {
+                                    enemies.splice(e, 1);
+                                    score += 10;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                ctx.fillStyle = '#fff'; ctx.font = '16px monospace';
+                ctx.fillText(`Intercept Tally: ${score}`, 25, 35);
+                document.getElementById('shooter-score').innerText = score;
+
+            }, 1000 / 60);
+        }
+
+        // ==========================================
+        // GAME 3: SNAKE
         // ==========================================
         function initSnake() {
             let size = 20;
@@ -364,11 +571,11 @@
                 if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = size; }
             };
 
-            activeLoop = setInterval(() => {
+            runtimeLoop = setInterval(() => {
                 let head = {x: snake[0].x + dx, y: snake[0].y + dy};
                 
                 if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
-                    clearInterval(activeLoop);
+                    clearInterval(runtimeLoop);
                     alert(`Game Over! Final Score: ${score}`);
                     exitWorkspace();
                     return;
@@ -390,7 +597,7 @@
         }
 
         // ==========================================
-        // GAME 2: PONG
+        // GAME 4: PONG
         // ==========================================
         function initPong() {
             let padH = 80, padW = 10;
@@ -402,7 +609,7 @@
             window.onkeydown = e => keys[e.key] = true;
             window.onkeyup = e => keys[e.key] = false;
 
-            activeLoop = setInterval(() => {
+            runtimeLoop = setInterval(() => {
                 if (keys['ArrowUp'] && p1Y > 0) p1Y -= 5;
                 if (keys['ArrowDown'] && p1Y < canvas.height - padH) p1Y += 5;
                 
@@ -417,7 +624,7 @@
                     if (ballY > p1Y && ballY < p1Y + padH) {
                         ballVX = -ballVX * 1.05;
                     } else {
-                        clearInterval(activeLoop);
+                        clearInterval(runtimeLoop);
                         alert('Game Over!');
                         exitWorkspace();
                         return;
@@ -437,7 +644,7 @@
         }
 
         // ==========================================
-        // GAME 3: BREAKOUT
+        // GAME 5: BREAKOUT
         // ==========================================
         function initBreakout() {
             let paddleX = canvas.width / 2 - 40;
@@ -450,7 +657,6 @@
             let score = 0;
             let keys = {};
 
-            // Create bricks
             let bricks = [];
             for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < 5; j++) {
@@ -467,23 +673,20 @@
             window.onkeydown = e => keys[e.key] = true;
             window.onkeyup = e => keys[e.key] = false;
 
-            activeLoop = setInterval(() => {
+            runtimeLoop = setInterval(() => {
                 if (keys['ArrowLeft'] && paddleX > 0) paddleX -= 7;
                 if (keys['ArrowRight'] && paddleX < canvas.width - paddleW) paddleX += 7;
 
                 ballX += ballVX;
                 ballY += ballVY;
 
-                // Wall collisions
                 if (ballX - ballRadius <= 0 || ballX + ballRadius >= canvas.width) ballVX = -ballVX;
                 if (ballY - ballRadius <= 0) ballVY = -ballVY;
 
-                // Paddle collision
                 if (ballY + ballRadius >= paddleY && ballX > paddleX && ballX < paddleX + paddleW) {
                     ballVY = -ballVY;
                 }
 
-                // Brick collisions
                 bricks.forEach(brick => {
                     if (brick.active && ballX > brick.x && ballX < brick.x + brick.w && 
                         ballY > brick.y && ballY < brick.y + brick.h) {
@@ -493,11 +696,10 @@
                     }
                 });
 
-                // Bottom collision
                 if (ballY > canvas.height) {
                     lives--;
                     if (lives <= 0) {
-                        clearInterval(activeLoop);
+                        clearInterval(runtimeLoop);
                         alert(`Game Over! Final Score: ${score}`);
                         exitWorkspace();
                         return;
@@ -506,15 +708,13 @@
                     ballY = canvas.height - 40;
                 }
 
-                // Check win
                 if (bricks.every(b => !b.active)) {
-                    clearInterval(activeLoop);
+                    clearInterval(runtimeLoop);
                     alert(`You Won! Score: ${score}`);
                     exitWorkspace();
                     return;
                 }
 
-                // Draw
                 ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#3498db';
@@ -531,7 +731,7 @@
         }
 
         // ==========================================
-        // GAME 4: MEMORY
+        // GAME 6: MEMORY
         // ==========================================
         function initMemory() {
             const symbols = ['🎨', '🎭', '🎪', '🎯', '🎸', '🎲', '🎰', '🎳'];
@@ -594,7 +794,7 @@
         }
 
         // ==========================================
-        // GAME 5: SIMON SAYS
+        // GAME 7: SIMON SAYS
         // ==========================================
         function initSimon() {
             const colors = ['red', 'blue', 'green', 'yellow'];
@@ -648,7 +848,6 @@
                 return true;
             }
 
-            // Add click handlers
             Object.entries(buttons).forEach(([color, btn]) => {
                 btn.addEventListener('click', () => {
                     if (!gameActive) return;
@@ -658,18 +857,17 @@
                 });
             });
 
-            // Start game
             sequence.push(colors[Math.floor(Math.random() * 4)]);
             setTimeout(() => playSequence(), 1000);
         }
 
         // ==========================================
-        // GAME 6: MAZE
+        // GAME 8: MAZE
         // ==========================================
         function initMaze() {
             let mazeLevel = 1;
-            let playerX = 10;
-            let playerY = 10;
+            let playerX = 1;
+            let playerY = 1;
             let cellSize = 20;
             let keys = {};
 
@@ -696,13 +894,11 @@
             }
 
             let maze = generateMaze(30, 20);
-            playerX = 1;
-            playerY = 1;
 
             window.onkeydown = e => keys[e.key] = true;
             window.onkeyup = e => keys[e.key] = false;
 
-            activeLoop = setInterval(() => {
+            runtimeLoop = setInterval(() => {
                 let newX = playerX;
                 let newY = playerY;
 
@@ -716,7 +912,6 @@
                     playerY = newY;
                 }
 
-                // Check if reached exit
                 if (playerX === 28 && playerY === 18) {
                     mazeLevel++;
                     maze = generateMaze(30, 20);
@@ -725,7 +920,6 @@
                     document.getElementById('maze-level').innerText = mazeLevel;
                 }
 
-                // Draw
                 ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
