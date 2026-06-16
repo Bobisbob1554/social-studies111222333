@@ -3,182 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduCore Analytics - Complete Game Suite v6.0</title>
+    <title>Game Suite - Drew Pep</title>
     <style>
-        :root {
-            --bg-dark: #121214;
-            --panel-bg: #1a1a1e;
-            --accent-cyan: #00ffcc;
-            --accent-pink: #ff007f;
-            --text-light: #e2e8f0;
-            --primary: #34495e;
-            --success: #27ae60;
-        }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-            padding: 0;
-            user-select: none;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
             overflow-x: hidden;
         }
-        .navbar {
-            background-color: var(--panel-bg);
-            border-bottom: 1px solid #2d2d34;
-            padding: 15px 40px;
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .logo-text {
+        
+        .header h1 {
+            font-size: 32px;
             font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--accent-cyan);
+            color: #667eea;
+            letter-spacing: -0.5px;
         }
+        
+        .creator-badge {
+            font-size: 16px;
+            color: #764ba2;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .creator-badge::before {
+            content: "✨";
+            font-size: 20px;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
-        .alert-box {
-            background: rgba(0, 255, 204, 0.05);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 6px;
-            padding: 15px 20px;
-            margin-bottom: 30px;
-            font-size: 14px;
-            color: #a7f3d0;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-        .card {
-            background: var(--panel-bg);
-            border: 1px solid #2d2d34;
-            border-radius: 8px;
+        
+        .intro-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
             padding: 30px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
-        .card:hover {
-            border-color: var(--accent-pink);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        
+        .intro-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 24px;
         }
-        .card h3 {
-            margin-top: 0;
-            color: #fff;
-            font-size: 20px;
-        }
-        .card p {
-            color: #94a3b8;
-            font-size: 14px;
+        
+        .intro-section p {
+            color: #666;
+            font-size: 16px;
             line-height: 1.6;
         }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: #667eea;
+        }
+        
+        .game-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .game-card h3 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .game-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+        }
+        
+        /* Game View */
+        #main-hub { display: block; }
+        
         #workspace {
             display: none;
-            background: var(--panel-bg);
-            border: 1px solid #2d2d34;
-            border-radius: 8px;
-            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 1200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+        
         .game-container {
             display: none;
             width: 100%;
             text-align: center;
         }
-        .btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid var(--accent-cyan);
-            padding: 10px 24px;
-            border-radius: 4px;
+        
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.2s;
-            margin-bottom: 20px;
+            font-size: 15px;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-        .btn:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
+        
         canvas {
-            background: #09090b;
+            background: #111;
             display: block;
             margin: 20px auto;
-            border-radius: 6px;
-            border: 2px solid #2d2d34;
+            border-radius: 10px;
+            border: 2px solid #667eea;
             max-width: 100%;
             height: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
+        
         .game-info {
             text-align: center;
-            color: #a7f3d0;
-            margin-bottom: 15px;
-            font-size: 14px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
         }
+        
         .score-display {
             text-align: center;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
-            color: var(--accent-cyan);
-            margin: 15px 0;
+            color: #667eea;
+            margin: 20px 0;
         }
+        
         /* Memory Game */
         .memory-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
             max-width: 400px;
-            margin: 20px auto;
+            margin: 25px auto;
         }
+        
         .memory-card {
             width: 100%;
             aspect-ratio: 1;
-            background: linear-gradient(135deg, #ff007f, #ff4da6);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: white;
-            transition: all 0.1s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-        .memory-card:hover { transform: scale(1.05); }
+        
+        .memory-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
         .memory-card.flipped {
-            background: #2d2d34;
-            color: #a7f3d0;
+            background: #f5f5f5;
+            color: #333;
         }
+        
         /* Simon Game */
         .simon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            max-width: 300px;
-            margin: 20px auto;
+            gap: 20px;
+            max-width: 320px;
+            margin: 25px auto;
         }
+        
         .simon-btn {
             width: 100%;
             aspect-ratio: 1;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
-            opacity: 0.7;
-            transition: all 0.1s;
+            opacity: 0.8;
+            transition: all 0.15s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        .simon-btn:hover { opacity: 0.9; }
+        
+        .simon-btn:hover { opacity: 0.95; }
         .simon-btn.red { background-color: #e74c3c; }
-        .simon-btn.blue { background-color: #00ffcc; }
-        .simon-btn.green { background-color: #27ae60; }
+        .simon-btn.blue { background-color: #3498db; }
+        .simon-btn.green { background-color: #2ecc71; }
         .simon-btn.yellow { background-color: #f39c12; }
         .simon-btn.active { opacity: 1; transform: scale(1.1); }
+        
         /* Panic Screen */
         #panic-screen {
             display: none;
@@ -191,104 +258,118 @@
             z-index: 99999;
             overflow-y: auto;
         }
+        
+        @media (max-width: 768px) {
+            .header { padding: 20px; }
+            .header h1 { font-size: 24px; }
+            .creator-badge { font-size: 14px; }
+            .games-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+            .game-card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
-
+    
     <!-- MAIN HUB -->
     <div id="main-hub">
-        <div class="navbar">
-            <span class="logo-text">QUANTUM LABS v10.9</span>
-            <span style="font-size: 13px; color: #94a3b8;">User Check: Validated</span>
+        <div class="header">
+            <h1>🎮 Game Suite</h1>
+            <div class="creator-badge">by Drew Pep</div>
         </div>
         
         <div class="container">
-            <div class="alert-box">
-                <strong>System Configuration:</strong> Interactive visual matrix engine active. Hit <strong>ESC</strong> at any point to load structural references over this active partition instantly.
+            <div class="intro-section">
+                <h2>Welcome to the Ultimate Game Collection</h2>
+                <p>Play a variety of games to test your skills and have fun. Choose a game below to get started!</p>
             </div>
-
-            <div class="grid">
-                <!-- Original Games -->
-                <div class="card" onclick="launchGame('dash')">
-                    <h3>🏃 Kinetic Momentum (Dash)</h3>
-                    <p>Analyze synchronized spatial velocity loops. Jump over incoming obstacles to test geometric reaction variables. SPACE or Click to jump.</p>
+            
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('dash')">
+                    <div class="icon">🏃</div>
+                    <h3>Dash Runner</h3>
+                    <p>Jump over obstacles and test your reflexes. How far can you run? Press SPACE or click to jump.</p>
                 </div>
                 
-                <div class="card" onclick="launchGame('shooter')">
-                    <h3>🎯 Tactical Vector (Shooter)</h3>
-                    <p>Calculate impact angles. Deploy interceptors to neutralize incoming blocks. ARROWS to move, SPACE to fire.</p>
-                </div>
-
-                <!-- Snake Game -->
-                <div class="card" onclick="launchGame('snake')">
-                    <h3>🐍 Spatial Module (Snake)</h3>
-                    <p>Analyze grid-based optimization paths. Collect food without self-intersecting. Arrow Keys to move.</p>
+                <div class="game-card" onclick="launchGame('shooter')">
+                    <div class="icon">🎯</div>
+                    <h3>Space Shooter</h3>
+                    <p>Defend your ship from incoming enemies. Use ARROWS to move and SPACE to fire.</p>
                 </div>
                 
-                <!-- Pong Game -->
-                <div class="card" onclick="launchGame('pong')">
-                    <h3>🎾 Kinetic Module (Pong)</h3>
-                    <p>Calculate angles of reflection. Deflect the ball with your paddle against AI. UP/DOWN arrows to control.</p>
+                <div class="game-card" onclick="launchGame('snake')">
+                    <div class="icon">🐍</div>
+                    <h3>Snake Master</h3>
+                    <p>Grow your snake by eating food. Avoid hitting walls and yourself. Use arrow keys to move.</p>
                 </div>
-
-                <!-- Breakout Game -->
-                <div class="card" onclick="launchGame('breakout')">
-                    <h3>🧱 Brick Breaker Module</h3>
-                    <p>Destroy all bricks by bouncing the ball. Catch power-ups for bonuses. ARROWS to move paddle.</p>
+                
+                <div class="game-card" onclick="launchGame('pong')">
+                    <div class="icon">🎾</div>
+                    <h3>Pong Classic</h3>
+                    <p>Paddle battle against AI. Reflect the ball and score points. Use UP/DOWN arrows.</p>
                 </div>
-
-                <!-- Memory Game -->
-                <div class="card" onclick="launchGame('memory')">
-                    <h3>🧠 Memory Pattern Module</h3>
-                    <p>Match pairs of cards. Test spatial memory and pattern recognition under time pressure.</p>
+                
+                <div class="game-card" onclick="launchGame('breakout')">
+                    <div class="icon">🧱</div>
+                    <h3>Brick Breaker</h3>
+                    <p>Break all the bricks with your ball. Catch power-ups and reach the top score. Use arrows to move.</p>
                 </div>
-
-                <!-- Simon Game -->
-                <div class="card" onclick="launchGame('simon')">
-                    <h3>🎨 Simon Sequence Module</h3>
-                    <p>Repeat increasingly complex color sequences. Train pattern recall and reaction time.</p>
+                
+                <div class="game-card" onclick="launchGame('memory')">
+                    <div class="icon">🧠</div>
+                    <h3>Memory Match</h3>
+                    <p>Match pairs of cards from memory. Test your concentration and observation skills.</p>
                 </div>
-
-                <!-- Maze Game -->
-                <div class="card" onclick="launchGame('maze')">
-                    <h3>🗺️ Maze Navigation Module</h3>
-                    <p>Navigate through procedurally generated mazes. Arrow Keys to move through passages.</p>
+                
+                <div class="game-card" onclick="launchGame('simon')">
+                    <div class="icon">🎨</div>
+                    <h3>Simon Says</h3>
+                    <p>Repeat the color sequences. Watch carefully and click the right colors in order.</p>
+                </div>
+                
+                <div class="game-card" onclick="launchGame('maze')">
+                    <div class="icon">🗺️</div>
+                    <h3>Maze Explorer</h3>
+                    <p>Navigate through procedurally generated mazes. Reach the exit without hitting walls.</p>
                 </div>
             </div>
         </div>
+        
+        <div class="footer">
+            <p>💡 Press ESC at any time to access study materials • Made with ❤️ by Drew Pep</p>
+        </div>
     </div>
-
+    
     <!-- WORKSPACE -->
     <div id="workspace" class="container">
-        <button class="btn" onclick="exitWorkspace()">← Terminate Session & Return</button>
+        <button class="back-btn" onclick="exitWorkspace()">← Back to Games</button>
         
         <!-- Dash Game -->
         <div id="game-dash" class="game-container">
-            <div class="game-info">Sync Velocity Score: <span id="dash-score">0</span> | Press SPACE or Click to Jump</div>
+            <div class="game-info">Score: <span id="dash-score">0</span> | Press SPACE or Click to Jump</div>
             <canvas id="gameCanvas" width="650" height="360"></canvas>
         </div>
 
         <!-- Shooter Game -->
         <div id="game-shooter" class="game-container">
-            <div class="game-info">Intercept Tally: <span id="shooter-score">0</span> | ARROWS to move, SPACE to fire</div>
+            <div class="game-info">Score: <span id="shooter-score">0</span> | ARROWS to move, SPACE to fire</div>
             <canvas id="gameCanvas" width="650" height="360"></canvas>
         </div>
 
         <!-- Snake Game -->
         <div id="game-snake" class="game-container">
-            <div class="game-info">Snake Game - Use Arrow Keys | Score: <span id="snake-score">0</span></div>
+            <div class="game-info">Score: <span id="snake-score">0</span> | Use Arrow Keys to Move</div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
         </div>
 
         <!-- Pong Game -->
         <div id="game-pong" class="game-container">
-            <div class="game-info">Pong - Use Arrow Keys Up/Down to Control Left Paddle</div>
+            <div class="game-info">Pong - Use Arrow Keys Up/Down to Control Your Paddle</div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
         </div>
 
         <!-- Breakout Game -->
         <div id="game-breakout" class="game-container">
-            <div class="game-info">Breakout - Destroy All Bricks | Score: <span id="breakout-score">0</span> | Lives: <span id="breakout-lives">3</span></div>
+            <div class="game-info">Score: <span id="breakout-score">0</span> | Lives: <span id="breakout-lives">3</span> | Use ARROWS to move paddle</div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
         </div>
 
@@ -307,12 +388,12 @@
                 <button class="simon-btn green" data-color="green"></button>
                 <button class="simon-btn yellow" data-color="yellow"></button>
             </div>
-            <p style="color: #94a3b8; margin-top: 20px;">Watch the pattern and repeat it by clicking the buttons.</p>
+            <p style="color: #667eea; margin-top: 20px; font-weight: 600;">Watch the pattern and repeat it by clicking the buttons.</p>
         </div>
 
         <!-- Maze Game -->
         <div id="game-maze" class="game-container">
-            <div class="game-info">Maze - Use Arrow Keys to Navigate | Level: <span id="maze-level">1</span></div>
+            <div class="game-info">Level: <span id="maze-level">1</span> | Use Arrow Keys to Navigate | Reach the Green Square!</div>
             <canvas id="gameCanvas" width="600" height="400"></canvas>
         </div>
     </div>
@@ -321,10 +402,10 @@
     <div id="panic-screen">
         <h1 style="font-size: 28px; border-bottom: 2px solid #cbd5e1; padding-bottom: 12px; margin-top: 0;">Chapter 7.4: Covalent Bonding and Molecular Orbitals</h1>
         <p style="font-size: 16px; line-height: 1.7; color: #334155;">
-            Unlike ionic structures where valence shells exchange electron structures completely, covalent configurations achieve atomic parity through mutual orbital sharing. The electronegativity differential (Δχ) between constituent elements determines the dipole distribution across the bond vector.
+            Unlike ionic structures where valence shells exchange electron structures completely, covalent configurations achieve atomic parity through mutual orbital sharing. The electronegativity differential determines bonding character and molecular geometry.
         </p>
         <p style="font-size: 16px; line-height: 1.7; color: #334155;">
-            When Δχ remains beneath a critical threshold of approximately 1.7, the compound exhibits non-polar characteristics. Sigma (σ) bonds represent localized orbital overlaps along the primary internuclear vector, whereas pi (π) bonds arise via parallel p-orbital arrays situated above and below the bonding axis plane.
+            When Δχ remains beneath a critical threshold of approximately 1.7, the compound exhibits non-polar characteristics. Sigma (σ) bonds represent localized orbital overlaps along the internuclear axis, while pi (π) bonds involve parallel orbital interactions perpendicular to this axis.
         </p>
         <button onclick="restoreApp()" style="margin-top: 50px; opacity: 0.1; background: none; border: 1px solid #ccc; padding: 5px; cursor: pointer;">Reinitialize Feed</button>
     </div>
@@ -432,17 +513,17 @@
 
                 ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                ctx.strokeStyle = '#00ffcc'; ctx.lineWidth = 3;
+                ctx.strokeStyle = '#667eea'; ctx.lineWidth = 3;
                 ctx.beginPath(); ctx.moveTo(0, 310); ctx.lineTo(canvas.width, 310); ctx.stroke();
 
-                ctx.fillStyle = '#ff007f';
+                ctx.fillStyle = '#764ba2';
                 ctx.fillRect(80, playerY, 30, 30);
                 ctx.fillStyle = '#fff'; ctx.fillRect(88, playerY + 8, 14, 14);
 
                 for (let i = obstacles.length - 1; i >= 0; i--) {
                     obstacles[i].x -= gameSpeed;
 
-                    ctx.fillStyle = '#00ffcc';
+                    ctx.fillStyle = '#667eea';
                     ctx.beginPath();
                     ctx.moveTo(obstacles[i].x, 310);
                     ctx.lineTo(obstacles[i].x + obstacles[i].w / 2, 310 - obstacles[i].h);
@@ -452,7 +533,7 @@
                     if (obstacles[i].x < 110 && obstacles[i].x + obstacles[i].w > 80) {
                         if (playerY + 30 > 310 - obstacles[i].h) {
                             clearInterval(runtimeLoop);
-                            alert(`Matrix Sync Failure. Distance Traversed: ${score}`);
+                            alert(`Game Over! Distance Traversed: ${score}`);
                             exitWorkspace();
                             return;
                         }
@@ -463,7 +544,7 @@
                 }
 
                 ctx.fillStyle = '#fff'; ctx.font = '16px monospace';
-                ctx.fillText(`Sync Velocity Score: ${score}`, 25, 35);
+                ctx.fillText(`Score: ${score}`, 25, 35);
                 document.getElementById('dash-score').innerText = score;
             }, 1000 / 60);
         }
@@ -500,13 +581,13 @@
 
                 ctx.fillStyle = '#09090b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = '#00ffcc';
+                ctx.fillStyle = '#667eea';
                 ctx.fillRect(shipX, 320, 40, 15);
                 ctx.fillRect(shipX + 15, 310, 10, 10);
 
                 for (let l = lasers.length - 1; l >= 0; l--) {
                     lasers[l].y -= 7;
-                    ctx.fillStyle = '#ff007f';
+                    ctx.fillStyle = '#764ba2';
                     ctx.fillRect(lasers[l].x, lasers[l].y, 4, 12);
 
                     if (lasers[l].y < -20) lasers.splice(l, 1);
@@ -520,7 +601,7 @@
                     
                     if (enemies[e].y > 310) {
                         clearInterval(runtimeLoop);
-                        alert(`Perimeter Compromised. Score: ${score}`);
+                        alert(`Game Over! Score: ${score}`);
                         exitWorkspace();
                         return;
                     }
@@ -542,7 +623,7 @@
                 }
 
                 ctx.fillStyle = '#fff'; ctx.font = '16px monospace';
-                ctx.fillText(`Intercept Tally: ${score}`, 25, 35);
+                ctx.fillText(`Score: ${score}`, 25, 35);
                 document.getElementById('shooter-score').innerText = score;
 
             }, 1000 / 60);
@@ -591,8 +672,8 @@
                 }
 
                 ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#2ecc71'; snake.forEach(p => ctx.fillRect(p.x, p.y, size-1, size-1));
-                ctx.fillStyle = '#e74c3c'; ctx.fillRect(foodX, foodY, size-1, size-1);
+                ctx.fillStyle = '#667eea'; snake.forEach(p => ctx.fillRect(p.x, p.y, size-1, size-1));
+                ctx.fillStyle = '#764ba2'; ctx.fillRect(foodX, foodY, size-1, size-1);
             }, 90);
         }
 
@@ -636,7 +717,7 @@
                 }
 
                 ctx.fillStyle = '#111'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#fff';
+                ctx.fillStyle = '#667eea';
                 ctx.fillRect(10, p1Y, padW, padH);
                 ctx.fillRect(canvas.width - 20, p2Y, padW, padH);
                 ctx.fillRect(ballX, ballY, 8, 8);
@@ -717,7 +798,7 @@
 
                 ctx.fillStyle = '#111';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#3498db';
+                ctx.fillStyle = '#667eea';
                 bricks.forEach(b => b.active && ctx.fillRect(b.x, b.y, b.w, b.h));
                 ctx.fillStyle = '#fff';
                 ctx.fillRect(paddleX, paddleY, paddleW, paddleH);
@@ -932,7 +1013,7 @@
                     }
                 }
 
-                ctx.fillStyle = '#27ae60';
+                ctx.fillStyle = '#2ecc71';
                 ctx.fillRect(28 * cellSize, 18 * cellSize, cellSize, cellSize);
 
                 ctx.fillStyle = '#f39c12';
